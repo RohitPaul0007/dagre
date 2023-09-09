@@ -1,17 +1,17 @@
-var expect = require("../chai").expect;
-var Graph = require("@dagrejs/graphlib").Graph;
-var networkSimplex = require("../../lib/rank/network-simplex");
-var longestPath = require("../../lib/rank/util").longestPath;
-var initLowLimValues = networkSimplex.initLowLimValues;
-var initCutValues = networkSimplex.initCutValues;
-var calcCutValue = networkSimplex.calcCutValue;
-var leaveEdge = networkSimplex.leaveEdge;
-var enterEdge = networkSimplex.enterEdge;
-var exchangeEdges = networkSimplex.exchangeEdges;
-var normalizeRanks = require("../../lib/util").normalizeRanks;
+let expect = require("../chai").expect;
+let Graph = require("@dagrejs/graphlib").Graph;
+let networkSimplex = require("../../lib/rank/network-simplex");
+let longestPath = require("../../lib/rank/util").longestPath;
+let initLowLimValues = networkSimplex.initLowLimValues;
+let initCutValues = networkSimplex.initCutValues;
+let calcCutValue = networkSimplex.calcCutValue;
+let leaveEdge = networkSimplex.leaveEdge;
+let enterEdge = networkSimplex.enterEdge;
+let exchangeEdges = networkSimplex.exchangeEdges;
+let normalizeRanks = require("../../lib/util").normalizeRanks;
 
 describe("network simplex", () => {
-  var g, t, gansnerGraph, gansnerTree;
+  let g, t, gansnerGraph, gansnerTree;
 
   beforeEach(() => {
     g = new Graph({ multigraph: true })
@@ -102,14 +102,14 @@ describe("network simplex", () => {
 
   describe("leaveEdge", () => {
     it("returns undefined if there is no edge with a negative cutvalue", () => {
-      var tree = new Graph({ directed: false });
+      let tree = new Graph({ directed: false });
       tree.setEdge("a", "b", { cutvalue: 1 });
       tree.setEdge("b", "c", { cutvalue: 1 });
       expect(leaveEdge(tree)).to.be.undefined;
     });
 
     it("returns an edge if one is found with a negative cutvalue", () => {
-      var tree = new Graph({ directed: false });
+      let tree = new Graph({ directed: false });
       tree.setEdge("a", "b", { cutvalue: 1 });
       tree.setEdge("b", "c", { cutvalue: -1 });
       expect(leaveEdge(tree)).to.eql({ v: "b", w: "c" });
@@ -127,7 +127,7 @@ describe("network simplex", () => {
       t.setPath(["b", "c", "a"]);
       initLowLimValues(t, "c");
 
-      var f = enterEdge(t, g, { v: "b", w: "c" });
+      let f = enterEdge(t, g, { v: "b", w: "c" });
       expect(undirectedEdge(f)).to.eql(undirectedEdge({ v: "a", w: "b" }));
     });
 
@@ -141,7 +141,7 @@ describe("network simplex", () => {
       t.setPath(["b", "c", "a"]);
       initLowLimValues(t, "b");
 
-      var f = enterEdge(t, g, { v: "b", w: "c" });
+      let f = enterEdge(t, g, { v: "b", w: "c" });
       expect(undirectedEdge(f)).to.eql(undirectedEdge({ v: "a", w: "b" }));
     });
 
@@ -157,7 +157,7 @@ describe("network simplex", () => {
       t.setPath(["c", "d", "a", "b"]);
       initLowLimValues(t, "a");
 
-      var f = enterEdge(t, g, { v: "c", w: "d" });
+      let f = enterEdge(t, g, { v: "c", w: "d" });
       expect(undirectedEdge(f)).to.eql(undirectedEdge({ v: "b", w: "c" }));
     });
 
@@ -167,7 +167,7 @@ describe("network simplex", () => {
       longestPath(g);
       initLowLimValues(t, "a");
 
-      var f = enterEdge(t, g, { v: "g", w: "h" });
+      let f = enterEdge(t, g, { v: "g", w: "h" });
       expect(undirectedEdge(f).v).to.equal("a");
       expect(["e", "f"]).to.include(undirectedEdge(f).w);
     });
@@ -178,7 +178,7 @@ describe("network simplex", () => {
       longestPath(g);
       initLowLimValues(t, "e");
 
-      var f = enterEdge(t, g, { v: "g", w: "h" });
+      let f = enterEdge(t, g, { v: "g", w: "h" });
       expect(undirectedEdge(f).v).to.equal("a");
       expect(["e", "f"]).to.include(undirectedEdge(f).w);
     });
@@ -189,7 +189,7 @@ describe("network simplex", () => {
       longestPath(g);
       initLowLimValues(t, "a");
 
-      var f = enterEdge(t, g, { v: "h", w: "g" });
+      let f = enterEdge(t, g, { v: "h", w: "g" });
       expect(undirectedEdge(f).v).to.equal("a");
       expect(["e", "f"]).to.include(undirectedEdge(f).w);
     });
@@ -200,7 +200,7 @@ describe("network simplex", () => {
       longestPath(g);
       initLowLimValues(t, "e");
 
-      var f = enterEdge(t, g, { v: "h", w: "g" });
+      let f = enterEdge(t, g, { v: "h", w: "g" });
       expect(undirectedEdge(f).v).to.equal("a");
       expect(["e", "f"]).to.include(undirectedEdge(f).w);
     });
@@ -208,18 +208,18 @@ describe("network simplex", () => {
 
   describe("initLowLimValues", () => {
     it("assigns low, lim, and parent for each node in a tree", () => {
-      var g = new Graph()
+      let g = new Graph()
         .setDefaultNodeLabel(() => ({}))
         .setNodes(["a", "b", "c", "d", "e"])
         .setPath(["a", "b", "a", "c", "d", "c", "e"]);
 
       initLowLimValues(g, "a");
 
-      var a = g.node("a");
-      var b = g.node("b");
-      var c = g.node("c");
-      var d = g.node("d");
-      var e = g.node("e");
+      let a = g.node("a");
+      let b = g.node("b");
+      let c = g.node("c");
+      let d = g.node("d");
+      let e = g.node("e");
 
       expect(g.nodes().map(v => g.node(v).lim).sort())
         .to.eql([1, 2, 3, 4, 5]);
@@ -261,7 +261,7 @@ describe("network simplex", () => {
       expect(t.edge("g", "f").cutvalue).to.equal(0);
 
       // ensure lim numbers look right
-      var lims = t.nodes().map(v => t.node(v).lim).sort();
+      let lims = t.nodes().map(v => t.node(v).lim).sort();
       expect(lims).to.eql([1, 2, 3, 4, 5, 6, 7, 8]);
     });
 
