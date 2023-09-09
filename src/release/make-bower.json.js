@@ -2,11 +2,11 @@
 
 // Renders the bower.json template and prints it to stdout
 
-var packageJson = require("../../package.json");
-var packageNameParts = packageJson.name.split("/");
-var packageName = packageNameParts[packageNameParts.length - 1];
+let packageJson = require("../../package.json");
+let packageNameParts = packageJson.name.split("/");
+let packageName = packageNameParts[packageNameParts.length - 1];
 
-var template = {
+let template = {
   name: packageName,
   version: packageJson.version,
   main: ["dist/" + packageName + ".core.js"],
